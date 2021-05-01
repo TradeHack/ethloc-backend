@@ -2,7 +2,7 @@
 
 Hey there :wave:
 
-As part of the [Scaling Ethereum Hackathon](https://hack.ethglobal.co/), @re-minder, @connerjason, and @ajascha decided to build a prototype for a major piece of trade finance to the blockchain: The Letter of Credit.
+As part of the [Scaling Ethereum Hackathon](https://hack.ethglobal.co/), we wanted to build a prototype for a major piece of trade finance to the blockchain: The Letter of Credit.
 
 ## Stack
 
