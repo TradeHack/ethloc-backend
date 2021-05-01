@@ -7,9 +7,7 @@ As part of the [Scaling Ethereum Hackathon](https://hack.ethglobal.co/), @re-min
 ## Stack
 
 - **Blockchain:** We use [Starkware](https://starkware.co/) for building a scalable Layer 2 application on Ethereum.
-
 - **Frontend:** [Bulma](https://bulma.io)
-
 - **Backend:** [FastAPI](https://fastapi.tiangolo.com)
 
 ## Run locally
