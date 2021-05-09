@@ -1,22 +1,16 @@
 <!DOCTYPE html>
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Dashboard | TradeHack</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css" />
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+
 </head>
 
 <body>
-
-  <!-- <section class="section">
-    <div class="container">
-      <figure class="image container is-64x64">
-
-          <img class="is-rounded" src="https://i.ibb.co/mT9r1ry/th-logo.png" alt="TradeHack" href="https://bulma.io">
-
-      </figure>
-    </div>
-  </section> -->
 
   <div class="container is-max-desktop">
 
@@ -40,10 +34,6 @@
             Create transaction
           </a>
 
-          <a class="navbar-item" href="/trade-history">
-            Trade history
-          </a>
-
           <a class="navbar-item" href="/about">
             About
           </a>
@@ -53,15 +43,11 @@
         <div class="navbar-end">
 
           <div class="navbar-item">
-            Nucular Inc.
-          </div>
-
-          <div class="navbar-item">
             <div class="buttons">
-            <a class="button is-light">
-              Log out
-            </a>
-          </div>
+              <a class="button is-light">
+                Log out
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -72,9 +58,50 @@
 
   <section class="section">
     <div class="container is-max-desktop">
-      <h2 class="title is-2 has-text-centered	">Dashboard</h2>
+      <h2 class="title is-2 has-text-centered	">Transactions</h2>
 
-      <!-- Content here -->
+      <!-- <h3 class="title is-3">Transactions</h3> -->
+
+      <table class="table is-fullwidth">
+        <thead>
+          <tr>
+            <th>Escrow ID</th>
+            <!-- <th>Importer</th> -->
+            <th>Amount</th>
+            <!-- <th>Token</th> -->
+            <!-- <th>Freight forwarder</th> -->
+            <th>Expiry date</th>
+            <!-- <th>Incoterms</th> -->
+            <!-- <th>Exporter address</th> -->
+            <th>Importer reference</th>
+            <!-- <th>Freight forwarder reference</th> -->
+            <th>Signed</th>
+            <th>Filled</th>
+            <th>Closed</th>
+            <th>Details</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          {% for id in deals %}
+          <tr>
+            <td>{{ id }}</td>
+            <td>{{ deals[id][1] }} {{ deals[id][2] }}</td>
+            <!-- <td>{{ deals[id][2] }}</td> -->
+            <td>{{ deals[id][5] }}</td> <!-- Expiry date -->
+            <td>{{ deals[id][-5] }}</td>
+            <td>{{ deals[id][-3] }}</td>
+            <td>{{ deals[id][-2] }}</td>
+            <td>{{ deals[id][-1] }}</td>
+            <td class="has-text-centered">
+              <a href="/fund-escrow?escrow_id={{ id }}">✍️</a>
+            </td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+
 
     </div>
   </section>

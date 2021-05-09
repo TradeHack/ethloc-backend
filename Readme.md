@@ -6,9 +6,9 @@ As part of the [Scaling Ethereum Hackathon](https://hack.ethglobal.co/), we want
 
 ## Stack
 
-- **Blockchain:** We use [Starkware](https://starkware.co/) for building a scalable Layer 2 application on Ethereum.
+- **Blockchain:** We are using [Skale](https://skale.network/) for scaling our application on Layer 2 of Ethereum.
 - **Frontend:** [Bulma](https://bulma.io)
-- **Backend:** [FastAPI](https://fastapi.tiangolo.com)
+- **Backend:** [Flask](https://flask.palletsprojects.com/)
 
 ## Run locally
 

@@ -1,100 +1,123 @@
 <!DOCTYPE html>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Hello Bulma!</title>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css"
-    />
-    <!-- <link
-      href="../node_modules/bulma-calendar/dist/css/bulma-calendar.min.css"
-      rel="stylesheet"
-    /> -->
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Create transaction | TradeHack</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css" />
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 
-    <link
-      href="https://cdn.jsdelivr.net/npm/bulma-calendar@6.1.0/dist/js/bulma-calendar.min.css"
-      rel="stylesheet"
-    />
+  <link href="https://cdn.jsdelivr.net/npm/bulma-calendar@6.1.0/dist/js/bulma-calendar.min.css" rel="stylesheet" />
 
-    <!-- <script src="~bulma-calendar/dist/js/bulma-calendar.min.js"></script> -->
-    <script src="https://cdn.jsdelivr.net/npm/bulma-calendar@6.1.0/dist/js/bulma-calendar.min.js"></script>
+  <!-- <script src="~bulma-calendar/dist/js/bulma-calendar.min.js"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/bulma-calendar@6.1.0/dist/js/bulma-calendar.min.js"></script>
 
-    <script>
-      // Initialize all input of date type.
-      const calendars = bulmaCalendar.attach('[type="date"]', options);
+  <script>
+    // Initialize all input of date type.
+    const calendars = bulmaCalendar.attach('[type="date"]', options);
 
-      // Loop on each calendar initialized
-      calendars.forEach((calendar) => {
-        // Add listener to select event
-        calendar.on("select", (date) => {
-          console.log(date);
-        });
+    // Loop on each calendar initialized
+    calendars.forEach((calendar) => {
+      // Add listener to select event
+      calendar.on("select", (date) => {
+        console.log(date);
       });
+    });
 
-      // To access to bulmaCalendar instance of an element
-      const element = document.getElementById("datefield");
-      if (element) {
-        // bulmaCalendar instance is available as element.bulmaCalendar
-        element.bulmaCalendar.on("select", (datepicker) => {
-          console.log(datepicker.data.value());
-        });
-      }
-    </script>
-  </head>
-  <body>
-    <section class="section">
-      <div class="container">
-        <h1 class="title">Hello World</h1>
-        <p class="subtitle">Frontend here we come!</p>
+    // To access to bulmaCalendar instance of an element
+    const element = document.getElementById("datefield");
+    if (element) {
+      // bulmaCalendar instance is available as element.bulmaCalendar
+      element.bulmaCalendar.on("select", (datepicker) => {
+        console.log(datepicker.data.value());
+      });
+    }
+  </script>
+</head>
+
+<body>
+  <div class="container is-max-desktop">
+
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="/">
+          <img class="is-rounded is-64x64" src="https://i.ibb.co/mT9r1ry/th-logo.png">
+        </a>
+
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
       </div>
-    </section>
 
-    <section class="section">
-      <div class="container is-max-desktop">
-        <h2 class="title is-2">Create new transaction</h2>
+      <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+
+          <a class="navbar-item" href="/create-transaction">
+            Create transaction
+          </a>
+
+          <a class="navbar-item" href="/about">
+            About
+          </a>
+
+        </div>
+
+        <div class="navbar-end">
+
+          <div class="navbar-item">
+            <div class="buttons">
+              <a class="button is-light">
+                Log out
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+  </div>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <h2 class="title is-2 has-text-centered	">Create transaction</h2>
+
+      <form action="/create-transaction" method="post">
 
         <!-- Trade partner -->
         <div class="field">
           <label class="label">Trade partner</label>
-          <div class="select is-fullwidth">
-            <select>
-                <option value="none">Select trade partner</option>
-                <option value="nucular">Nucular Inc.</option>
-              <option value="microsoft">Microsoft Inc.</option>
-            </select>
-          </div>
+          <p class="control is-expanded">
+            <input class="input" value="0xF411c83AA11D7d22670334B1E7f4D9DDE3f9f485" name="importerAddress" type="text" placeholder="Enter trade partner address">
+          </p>
         </div>
 
-        <!-- Amount -->
         <div class="field">
           <label class="label">Amount</label>
-          <div class="control">
-            <input class="input" type="text" placeholder="Enter amount" />
-          </div>
         </div>
 
-        <!-- Currency -->
-        <div class="field">
-          <label class="label">Currency</label>
-          <div class="select is-fullwidth">
-            <select>
-              <option value="usd">US Dollar</option>
-              <option value="eth">ETH</option>
-            </select>
-          </div>
+        <!-- Amount & currency -->
+        <div class="field has-addons is-fullwidth">
+          <p class="control is-expanded">
+            <input class="input" value="100" name="amount" type="text" placeholder="Enter amount">
+          </p>
+          <p class="control">
+            <span class="select" placeholder="currency">
+              <select name="currency">
+                <option value="none">Currency</option>
+                <option value="tdhk">TDHK</option>
+              </select>
+            </span>
+          </p>
         </div>
 
         <!-- Incoterms -->
         <div class="field">
           <label class="label">Incoterms</label>
           <div class="select is-fullwidth">
-            <select>
-                <option value="none">Select Incoterms</option>
+            <select name="incoterms">
+              <option value="none">Select Incoterms</option>
               <option value="ddp">Delivery Duty Paid</option>
             </select>
           </div>
@@ -104,38 +127,37 @@
         <div class="field">
           <label class="label">Sales Order reference</label>
           <div class="control">
-            <input class="input" type="text" placeholder="77822000-881" />
+            <input class="input" name="exporterReference" value="1232433-123" type="text" placeholder="77822000-881" />
           </div>
         </div>
 
         <!-- Freight forwarder -->
         <div class="field">
-          <label class="label">Freight Forwarder</label>
-          <div class="select is-fullwidth">
-            <select>
-              <option value="dhl">DHL</option>
-              <option value="panalpina">Panalpina</option>
-            </select>
-          </div>
+          <label class="label">Freight forwarder</label>
+          <p class="control is-expanded">
+            <input class="input" name="fforwarder" type="text" value="0x4C15fbE41bB3F462d29EDB1df0D1AA98eC4C8168" placeholder="Enter freight forwarder address">
+          </p>
         </div>
 
         <!-- Expiration date -->
         <div class="field">
           <label class="label">Expiration date</label>
-          <input type="date" class="input" id="datefield"></input>
+          <input type="date" value="2021-05-15" class="input" name="expiryDate" id="datefield"></input>
         </div>
-
 
 
         <div class="field is-grouped">
           <div class="control">
-            <button class="button is-link">Submit</button>
+            <button class="button is-link" type="submit" value="Submit">Submit</button>
           </div>
           <div class="control">
             <button class="button is-link is-light" onclick="document.location='/'">Cancel</button>
           </div>
         </div>
-      </div>
-    </section>
-  </body>
+
+      </form>
+    </div>
+  </section>
+</body>
+
 </html>

@@ -5,9 +5,9 @@ name = "pypi"
 
 [packages]
 web3 = "*"
-fastapi = "*"
-uvicorn = "*"
 jinja2 = "*"
+flask = "*"
+py-solc = "*"
 
 [dev-packages]
 

@@ -1,10 +1,5 @@
 contractABI = [
 	{
-		"inputs": [],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
 		"inputs": [
 			{
 				"internalType": "uint64",
@@ -79,12 +74,140 @@ contractABI = [
 		"type": "function"
 	},
 	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_fforwarderReference",
+				"type": "string"
+			},
+			{
+				"internalType": "uint64",
+				"name": "_escrowId",
+				"type": "uint64"
+			}
+		],
+		"name": "sign_escrow",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
 		"inputs": [],
 		"name": "getCurrentEscrowId",
 		"outputs": [
 			{
 				"internalType": "uint64",
 				"name": "escrowId_",
+				"type": "uint64"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint64",
+				"name": "_escrowId",
+				"type": "uint64"
+			}
+		],
+		"name": "getDeal",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "address",
+						"name": "importer",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "contract ERC20",
+						"name": "tokenContract",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "exporterReference",
+						"type": "string"
+					},
+					{
+						"internalType": "address",
+						"name": "fforwarder",
+						"type": "address"
+					},
+					{
+						"internalType": "uint64",
+						"name": "expiryDate",
+						"type": "uint64"
+					},
+					{
+						"internalType": "string",
+						"name": "incoterms",
+						"type": "string"
+					},
+					{
+						"internalType": "address payable",
+						"name": "exporter",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "importerReference",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "fforwarderReference",
+						"type": "string"
+					},
+					{
+						"internalType": "bool",
+						"name": "signed",
+						"type": "bool"
+					},
+					{
+						"internalType": "bool",
+						"name": "filled",
+						"type": "bool"
+					},
+					{
+						"internalType": "bool",
+						"name": "closed",
+						"type": "bool"
+					}
+				],
+				"internalType": "struct Deal",
+				"name": "",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint64",
+				"name": "_escrowId",
+				"type": "uint64"
+			}
+		],
+		"name": "getExpiryDate",
+		"outputs": [
+			{
+				"internalType": "uint64",
+				"name": "expiryDate",
 				"type": "uint64"
 			}
 		],
@@ -213,6 +336,25 @@ contractABI = [
 				"type": "uint64"
 			}
 		],
+		"name": "getIncoterms",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "incoterms",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint64",
+				"name": "_escrowId",
+				"type": "uint64"
+			}
+		],
 		"name": "getTokenAddress",
 		"outputs": [
 			{
@@ -246,19 +388,58 @@ contractABI = [
 	{
 		"inputs": [
 			{
-				"internalType": "string",
-				"name": "_fforwarderReference",
-				"type": "string"
-			},
+				"internalType": "uint64",
+				"name": "_escrowId",
+				"type": "uint64"
+			}
+		],
+		"name": "isClosed",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "isEscrowClosed",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
 			{
 				"internalType": "uint64",
 				"name": "_escrowId",
 				"type": "uint64"
 			}
 		],
-		"name": "sign_escrow",
-		"outputs": [],
-		"stateMutability": "nonpayable",
+		"name": "isFunded",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "isEscrowFilled",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint64",
+				"name": "_escrowId",
+				"type": "uint64"
+			}
+		],
+		"name": "isSigned",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "isEscrowSigned",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
 		"type": "function"
 	}
 ]
