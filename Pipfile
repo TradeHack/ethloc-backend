@@ -8,6 +8,7 @@ web3 = "*"
 jinja2 = "*"
 flask = "*"
 py-solc = "*"
+gunicorn = "*"
 
 [dev-packages]
 
