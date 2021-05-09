@@ -181,3 +181,8 @@ def close_escrow():
             close_escrow_tx, private_key=private_key)
         w3.eth.sendRawTransaction(close_escrow_txn.rawTransaction)
         sleep(4)
+
+
+if __name__ == '__main__':
+    # Threaded option to enable multiple instances for multiple user access support
+    app.run(threaded=True, port=5000)
