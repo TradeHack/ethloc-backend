@@ -6,8 +6,8 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
 
-# infura_url = "https://ropsten.infura.io/v3/3e314f13a91145d5a9fbbff70af7c36d" # Arne test
-infura_url = "https://mainnet.infura.io/v3/3e314f13a91145d5a9fbbff70af7c36d" # Arne mainnet
+infura_url = "https://ropsten.infura.io/v3/3e314f13a91145d5a9fbbff70af7c36d" # Arne test
+# infura_url = "https://mainnet.infura.io/v3/3e314f13a91145d5a9fbbff70af7c36d" # Arne mainnet
 # infura_url = "https://ropsten.infura.io/v3/08b451f2f4ef4ef789900e0fca5c84a6" # BlindProrok
 
 w3 = Web3(Web3.HTTPProvider(infura_url))
