@@ -60,7 +60,7 @@
       <h2 class="title is-2 has-text-centered">Trade details</h2>
 
       <!-- Table -->
-      <form action="fund-escrow" method="POST">
+      <form action="close-escrow" method="POST">
         <table class="table container">
 
           <tbody>
@@ -101,12 +101,15 @@
               </td>
             </tr>
             <tr>
-              <td><strong>Purcase order reference</strong></td>
+              <td><strong>Purchase Order Reference</strong></td>
               <td>
-
-                <div class="control">
-                  <input class="input is-small" type="text" name="importerReference" placeholder="77822000-881" />
-                </div>
+                {{ details[-5] }}
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Freight Forwarding Reference</strong></td>
+              <td>
+                {{ details[-4] }}
               </td>
             </tr>
 
@@ -115,13 +118,13 @@
         </table>
 
         <div class="field buttons is-centered">
-          <div class="control">
-            <button class="button is-light" onclick="document.location='/'">Back</button>
+            <div class="control">
+              <button class="button is-light" onclick="document.location='/'">Back</button>
+            </div>
+            <div class="control">
+              <button class="button is-success" type="submit" name="fforwarder-confirm"  value={{ id }}>Confirm shipment</button>
+            </div>
           </div>
-          <div class="control">
-            <button class="button is-success" type="submit" name="importer-confirm" value={{ id }}>Confirm draft</button>
-          </div>
-        </div>
 
       </form>
 

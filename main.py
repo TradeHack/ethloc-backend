@@ -5,6 +5,7 @@ import os
 import json
 from web3 import Web3
 from solc import compile_standard
+from credentials import *
 
 from testdata import *
 from time import sleep
@@ -14,10 +15,10 @@ from flask import Flask, render_template, request
 
 
 nonce = 0
-def getTransactionDict():
+def getTransactionDict(account_address):
 
     global nonce
-    nonce = w3.eth.getTransactionCount(my_account_address)
+    nonce = w3.eth.getTransactionCount(account_address)
     return {
         'chainId': 0x1ee6072383c0a,
         'gas': 2100000,
@@ -49,8 +50,6 @@ app = Flask(__name__)
 @app.route('/')
 def root():
 
-
-    importerAddress = "0xF411c83AA11D7d22670334B1E7f4D9DDE3f9f485"
     deals = {}
     escrowsNumber = skale_contract.functions.getCurrentEscrowId().call()
     for _escrowId in range(1, escrowsNumber):
@@ -59,9 +58,8 @@ def root():
             deals[_escrowId][5] = datetime.utcfromtimestamp(deals[_escrowId][5]).strftime('%Y-%m-%d')
             deals[_escrowId][2] = 'TDHK'
     
-    print(deals)
     return render_template('dashboard.html',
-            deals=deals, role="importer")
+            deals=deals)
 
 
 @app.route("/create-transaction", methods=["GET", "POST"])
@@ -70,6 +68,7 @@ def show_template():
     if request.method == 'GET':
         return render_template("create-transaction.html")
     elif request.method == 'POST':
+        private_key = exporterPrivateKey
         data = request.form
         importerAddress_ = data["importerAddress"]
         amount_ = int(data["amount"])
@@ -85,34 +84,36 @@ def show_template():
                                                                   exporterReference_,
                                                                   fforwarder_,
                                                                   expiryDate_,
-                                                                  incoterms_).buildTransaction(getTransactionDict())
+                                                                  incoterms_).buildTransaction(getTransactionDict(exporterAddress))
         signed_escrow_txn = w3.eth.account.signTransaction(
             create_escrow_tx, private_key=private_key)
         w3.eth.sendRawTransaction(signed_escrow_txn.rawTransaction)
         sleep(4)
-        return ("It works!")
+
+        deals = {}
+        escrowsNumber = skale_contract.functions.getCurrentEscrowId().call()
+        for _escrowId in range(1, escrowsNumber):
+            if skale_contract.functions.getImporter(_escrowId).call():
+                deals[_escrowId] = list(skale_contract.functions.getDeal(_escrowId).call())
+                deals[_escrowId][5] = datetime.utcfromtimestamp(deals[_escrowId][5]).strftime('%Y-%m-%d')
+                deals[_escrowId][2] = 'TDHK'
+        
+        return render_template('dashboard.html',
+                deals=deals)
 
 
-# approve TDHK tokens to spend by our contract
-@app.route("/approve-tokens", methods=["GET", "POST"])
-def approve_tokens():
-    pass
-
-
-# fund newly created escrow (right now importer is exporter as skETH tokens (ETH of SKALE is available just for me, but if we need we can ask for more tokens on different accounts))
+# fund created escrow
 @app.route("/fund-escrow", methods=["GET", "POST"])
 def fund_escrow():
 
     # data = request.form
     # amount_ = data["amount"]
 
-
     if request.method == "GET":
 
         escrowId_ = int(request.args.get("escrow_id"))
 
         details = list(skale_contract.functions.getDeal(escrowId_).call())
-        print(details)
         details[5] = datetime.utcfromtimestamp(details[5]).strftime('%Y-%m-%d')
         details[2] = 'TDHK'
         
@@ -123,13 +124,10 @@ def fund_escrow():
 
     elif request.method == "POST":
 
-        data
-
-        # Approve token specified in newly created escrow
-        #tokenAddress_ = # TODO
+        private_key = importerPrivateKey
 
         approve_tx = tdhk_contract.functions.approve(
-            skale_contract_address, amount_).buildTransaction(getTransactionDict())
+            skale_contract_address, amount_).buildTransaction(getTransactionDict(importerAddress))
         signed_approve_txn = w3.eth.account.signTransaction(
             approve_tx, private_key=private_key)
         w3.eth.sendRawTransaction(signed_approve_txn.rawTransaction)
@@ -137,33 +135,62 @@ def fund_escrow():
 
         # Fund escrow
         data = request.form
-        escrowId_ = data["escrowId"]
+        escrowId_ = int(data["importer-confirm"])
         importerReference_ = data["importerReference"]
 
         fund_escrow_tx = skale_contract.functions.fund_escrow(
-            importerReference_, escrowId_).buildTransaction(getTransactionDict())
+            importerReference_, escrowId_).buildTransaction(getTransactionDict(importerAddress))
         fund_escrow_txn = w3.eth.account.signTransaction(
             fund_escrow_tx, private_key=private_key)
         w3.eth.sendRawTransaction(fund_escrow_txn.rawTransaction)
         sleep(4)
+        
+        deals = {}
+        escrowsNumber = skale_contract.functions.getCurrentEscrowId().call()
+        for _escrowId in range(1, escrowsNumber):
+            if skale_contract.functions.getImporter(_escrowId).call():
+                print(deals)
+                deals[_escrowId] = list(skale_contract.functions.getDeal(_escrowId).call())
+                deals[_escrowId][5] = datetime.utcfromtimestamp(deals[_escrowId][5]).strftime('%Y-%m-%d')
+                deals[_escrowId][2] = 'TDHK'
+        
+        return render_template('dashboard.html',
+                deals=deals)
 
 
-# sign escrow (also from the point of view of exporter as skETH is very deficit resource)
+# sign escrow
 @app.route("/sign-escrow", methods=["GET", "POST"])
 def sign_escrow():
     if request.method == "GET":
-        return render_template("sign.html")
+        escrowId_ = int(request.args.get("escrow_id"))
+
+        details = list(skale_contract.functions.getDeal(escrowId_).call())
+        details[5] = datetime.utcfromtimestamp(details[5]).strftime('%Y-%m-%d')
+        details[2] = 'TDHK'
+        return render_template("sign-escrow.html", id=escrowId_, details=details)
     elif request.method == "POST":
+        private_key = fforwarderPrivateKey
         data = request.form
-        escrowId_ = data["escrowId"]
         fforwarderReference_ = data["fforwarderReference"]
+        escrowId_ = int(data["fforwarder-confirm"])
 
         sign_escrow_tx = skale_contract.functions.sign_escrow(
-            fforwarderReference_, escrowId_).buildTransaction(getTransactionDict())
+            fforwarderReference_, escrowId_).buildTransaction(getTransactionDict(fforwarderAddress))
         sign_escrow_txn = w3.eth.account.signTransaction(
             sign_escrow_tx, private_key=private_key)
         w3.eth.sendRawTransaction(sign_escrow_txn.rawTransaction)
         sleep(4)
+        
+        deals = {}
+        escrowsNumber = skale_contract.functions.getCurrentEscrowId().call()
+        for _escrowId in range(1, escrowsNumber):
+            if skale_contract.functions.getImporter(_escrowId).call():
+                deals[_escrowId] = list(skale_contract.functions.getDeal(_escrowId).call())
+                deals[_escrowId][5] = datetime.utcfromtimestamp(deals[_escrowId][5]).strftime('%Y-%m-%d')
+                deals[_escrowId][2] = 'TDHK'
+        
+        return render_template('dashboard.html',
+                deals=deals)
 
 
 # close escrow (after the goods shipped succesfully!)
@@ -171,16 +198,39 @@ def sign_escrow():
 def close_escrow():
 
     if request.method == "GET":
-        return render_template("close.html")
+        escrowId_ = int(request.args.get("escrow_id"))
+
+        details = list(skale_contract.functions.getDeal(escrowId_).call())
+        details[5] = datetime.utcfromtimestamp(details[5]).strftime('%Y-%m-%d')
+        details[2] = 'TDHK'
+        return render_template("close-escrow.html", id=escrowId_, details=details)
     elif request.method == "POST":
-        escrowId_ = request.form["escrowId"]
+        private_key = fforwarderPrivateKey
+        escrowId_ = int(request.form["fforwarder-confirm"])
 
         close_escrow_tx = skale_contract.functions.close_escrow(
-            escrowId_).buildTransaction(getTransactionDict())
+            escrowId_).buildTransaction(getTransactionDict(fforwarderAddress))
         close_escrow_txn = w3.eth.account.signTransaction(
             close_escrow_tx, private_key=private_key)
         w3.eth.sendRawTransaction(close_escrow_txn.rawTransaction)
         sleep(4)
+        
+        deals = {}
+        escrowsNumber = skale_contract.functions.getCurrentEscrowId().call()
+        for _escrowId in range(1, escrowsNumber):
+            if skale_contract.functions.getImporter(_escrowId).call():
+                deals[_escrowId] = list(skale_contract.functions.getDeal(_escrowId).call())
+                deals[_escrowId][5] = datetime.utcfromtimestamp(deals[_escrowId][5]).strftime('%Y-%m-%d')
+                deals[_escrowId][2] = 'TDHK'
+        
+        return render_template('dashboard.html',
+                deals=deals)
+
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
 
 
 if __name__ == '__main__':

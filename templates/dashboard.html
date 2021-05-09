@@ -6,8 +6,6 @@
   <title>Dashboard | TradeHack</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css" />
   <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-
-
 </head>
 
 <body>
@@ -60,8 +58,6 @@
     <div class="container is-max-desktop">
       <h2 class="title is-2 has-text-centered	">Transactions</h2>
 
-      <!-- <h3 class="title is-3">Transactions</h3> -->
-
       <table class="table is-fullwidth">
         <thead>
           <tr>
@@ -94,7 +90,10 @@
             <td>{{ deals[id][-2] }}</td>
             <td>{{ deals[id][-1] }}</td>
             <td class="has-text-centered">
-              <a href="/fund-escrow?escrow_id={{ id }}">✍️</a>
+              <a href="/fund-escrow?escrow_id={{ id }}" title="Funding by importer">💰</a>
+              <a href="/sign-escrow?escrow_id={{ id }}" title="Confirmation by freight forwarder">✈️</a>
+              <a href="/close-escrow?escrow_id={{ id }}" title="Closing by freight forwarder">✅</a>
+              
             </td>
           </tr>
 

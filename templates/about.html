@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard | TradeHack</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css" />
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+</head>
+
+<body>
+
+  <div class="container is-max-desktop">
+
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="/">
+          <img class="is-rounded is-64x64" src="https://i.ibb.co/mT9r1ry/th-logo.png">
+        </a>
+
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+
+          <a class="navbar-item" href="/create-transaction">
+            Create transaction
+          </a>
+
+          <a class="navbar-item" href="/about">
+            About
+          </a>
+
+        </div>
+
+        <div class="navbar-end">
+
+          <div class="navbar-item">
+            <div class="buttons">
+              <a class="button is-light">
+                Log out
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+  </div>
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <h2 class="title is-2 has-text-centered">Hi there, Ethglobal & Skale!</h2>
+
+      <div class="content">
+      <p class="block">Today, banks are dominating international trade through what is called <i>Letter of Credit</i>. Despite process improvements on their side, the field has seen little innovation over the past decades.</p>
+      <p class="block">"This is how it's always been done. (Note also, we control the relationship with our clients.)"</p>
+      <p class="block">As a consequence, lots of companies are exempt from appropriate financing tools that make trade with strangers more secure and dependable.</p>
+      <p class="block">Our project is making the attempt to take them out of the equation and make finance more accessible.</p>
+      <p class="block">Our idea was to implement a system consisting of three parties:</p>
+      <ul>
+          <li>Exporter (seller)</li>
+          <li>Importer (buyer)</li>
+          <li>Freight forwarder (shipping company)</li>
+      </ul>
+      <p class="block">This is similar to the current setup, except without banks in between.</p>
+
+      <progress class="progress" value="0" max="100">15%</progress>
+
+      <p class="block">Here comes the sad part: We didn't manage to finish it in the way we wanted to. Our goal was to build the simplest possible form of anonymous authentication via Metamask but we couldn't get it to work with web3.py.
+          Once we noticed the problem, it was too late for us to change course. In hindsight, we should have noticed that issue as part of our initial research but hey: we learned a ton and managed to do the heavy lifting.
+      </p>
+      <p class="block">Thank you very much to the organizing team and sponsors! We are grateful for the great organization and all the work you do to make this new technology more scalable and enjoyable to work with. We will be back 💪</p>
+    </div>
+
+    </div>
+  </section>
+</body>
+
+</html>
